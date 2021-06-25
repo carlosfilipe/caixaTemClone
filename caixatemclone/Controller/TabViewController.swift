@@ -37,7 +37,7 @@ class TabViewController: UITabBarController {
         
         
         viewControllers = [
-            vc2, vc3, vc1,
+            vc1, vc2, vc3,
         ]
         
         

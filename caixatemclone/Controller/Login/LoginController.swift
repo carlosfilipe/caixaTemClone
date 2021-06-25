@@ -9,6 +9,8 @@ import UIKit
 
 class LoginController: UIViewController {
     
+    static let notificationLogin = NSNotification.Name(rawValue: "Done")
+    
     let welcome: UILabel = {
         let label = UILabel()
         label.text = "Olá! Seja bem-vindo ao"
@@ -91,10 +93,22 @@ class LoginController: UIViewController {
         gradient.endPoint = CGPoint(x: 1,   y: 0)
         gradient.colors = [firstColor.cgColor, secondColor.cgColor]
         view.layer.insertSublayer(gradient, at: 0)
+        
+        setupActions()
 
     }
     
+    func setupActions() {
+        enterButton.addTarget(self, action: #selector(enterLogin), for: .touchUpInside)
+    }
+    
+    @objc func enterLogin() {
+        print("clicou entrar")
+        NotificationCenter.default.post(name: LoginController.notificationLogin, object: nil)
+    }
+    
     func setupViews() {
+                
         view.addSubview(welcome)
         view.addSubview(versionLabel)
         view.addSubview(imageContainer)

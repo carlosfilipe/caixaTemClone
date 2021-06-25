@@ -19,12 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-//        window?.rootViewController = TabViewController()
-        window?.rootViewController = LoginController()
+        window?.rootViewController = TabViewController()
+//        window?.rootViewController = LoginController()
 //        window?.rootViewController = StackViewEx1Controller()
 //        window?.rootViewController = AutoLayoutTestViewController()
 
-        
+        NotificationCenter.default.addObserver(self, selector:#selector(done(notification:)),name:LoginController.notificationLogin,object: nil)
+
         
         //        window?.rootViewController = MainController(rootViewController: TabViewController())
         
@@ -34,6 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    @objc func done(notification: Notification) {
+        window?.rootViewController = TabViewController()
+
+    }
     
 }
 
