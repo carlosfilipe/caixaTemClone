@@ -15,7 +15,7 @@ class TabViewController: UITabBarController {
         
         let vc1: UINavigationController = {
            let vc = UINavigationController(rootViewController: HomeViewController())
-            vc.title = "V1"
+            vc.title = "Serviços"
             vc.tabBarItem.image = UIImage(systemName: "house")
             return vc
         }()

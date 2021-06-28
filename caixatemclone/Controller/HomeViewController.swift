@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 struct homeOptions {
     let image: String
     let title: String
@@ -15,11 +14,54 @@ struct homeOptions {
     let timeAgo: String
 }
 
-
 class HomeViewController: UIViewController {
+    
+    let accountInfoContainer: UIView = {
+        let container = UIView();
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.backgroundColor = UIColor(red: 5/255, green: 140/255, blue: 255/255, alpha: 1)
+        
+        return container;
+    }()
+    
+    let accountInfoTable:UIView = {
+        let viewContainer = UIView()
+        viewContainer.translatesAutoresizingMaskIntoConstraints = false
+        viewContainer.layer.borderWidth = 1
+        viewContainer.layer.borderColor = CGColor(red: 1, green: 1, blue: 1, alpha: 0.25)
+        viewContainer.layer.cornerRadius = 5
+//        viewContainer.backgroundColor = .green
+        return viewContainer
+    }()
+    
+    let moneyLabel:UILabel = {
+        let label = UILabel()
+        label.text = "Mostrar Saldo"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.textAlignment = .center
+        label.textColor = .white
+        
+        
+        return label
+    }()
+    
+    let account:UILabel = {
+        let label = UILabel()
+        label.text = "0000 0000 000000000-0"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        label.textAlignment = .center
+        label.textColor = .white
+        
+        
+        return label
+    }()
 
     let tableView: UITableView = {
         let tv = UITableView()
+        tv.translatesAutoresizingMaskIntoConstraints = false
+       
         tv.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.idenfier)
         return tv
         
@@ -128,11 +170,17 @@ class HomeViewController: UIViewController {
         
         NSLayoutConstraint.activate(titleViewConstraints)
         
+        //get rid of black bar underneath navbar
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
         navigationItem.leftBarButtonItems = [UIBarButtonItem.init(customView: titleView) ]
         
         view.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
+        
+        
         
         tableView.tableFooterView = UIView()
         setupViews()
@@ -141,12 +189,71 @@ class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        tableView.frame = view.bounds
+//        tableView.frame = view.bounds
     }
     
     private func setupViews() {
         view.addSubview(tableView)
-//        tableView.rowHeight = UITableView.automaticDimension;
+        view.addSubview(accountInfoContainer)
+        
+        accountInfoContainer.addSu bview(accountInfoTable)
+        
+        accountInfoTable.addSubview(moneyLabel)
+        accountInfoTable.addSubview(account)
+        
+        let accountConstraints = [
+//            accountInfoTable.topAnchor.constraint(equalTo: view.topAnchor),
+            account.trailingAnchor.constraint(equalTo: accountInfoTable.trailingAnchor),
+//            moneyLabel.widthAnchor.constraint(equalToConstant: 50),
+
+            account.widthAnchor.constraint(equalToConstant: (view.frame.width - 18 - 18)/2 ),
+            
+            account.heightAnchor.constraint(equalTo: accountInfoTable.heightAnchor),
+        ]
+        
+        NSLayoutConstraint.activate(accountConstraints)
+
+        
+        let moneyLabelConstraints = [
+//            accountInfoTable.topAnchor.constraint(equalTo: view.topAnchor),
+            moneyLabel.leadingAnchor.constraint(equalTo: accountInfoTable.leadingAnchor),
+//            moneyLabel.widthAnchor.constraint(equalToConstant: 50),
+
+            moneyLabel.widthAnchor.constraint(equalToConstant: (view.frame.width - 18 - 18)/2 ),
+            
+            moneyLabel.heightAnchor.constraint(equalTo: accountInfoTable.heightAnchor),
+        ]
+        
+        NSLayoutConstraint.activate(moneyLabelConstraints)
+       
+        
+        let accountInfoTableConstraints = [
+//            accountInfoTable.topAnchor.constraint(equalTo: view.topAnchor),
+            accountInfoTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
+            accountInfoTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+
+            accountInfoTable.heightAnchor.constraint(equalToConstant: 80)
+        ]
+        
+        NSLayoutConstraint.activate(accountInfoTableConstraints)
+       
+        let accountInfoContainerConstraints = [
+            accountInfoContainer.topAnchor.constraint(equalTo: view.topAnchor),
+            accountInfoContainer.widthAnchor.constraint(equalTo: view.widthAnchor),
+            accountInfoContainer.heightAnchor.constraint(equalToConstant: 120)
+        ]
+        
+        NSLayoutConstraint.activate(accountInfoContainerConstraints)
+        
+        //NAO VALE DE NADA
+        let tableViewConstraints = [
+            tableView.topAnchor.constraint(equalTo: accountInfoContainer.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.widthAnchor.constraint(equalTo: view.widthAnchor),
+        ]
+
+        NSLayoutConstraint.activate(tableViewConstraints)
+        tableView.rowHeight = UITableView.automaticDimension;
 
     }
 
